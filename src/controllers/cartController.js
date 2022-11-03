@@ -58,7 +58,7 @@ const createCart = async function (req, res) {
         if (productIdList.find(id => id.toString() == productId)) {
             const update = await cartModel.findOneAndUpdate(
                 { userId: userId, "items.productId": productId },
-                { $inc: { totalPrice: +checkProductId.price, "items.quantity": +1 } },
+                { $inc: { totalPrice: +checkProductId.price, "items.$.quantity": +1 } },
                 { new: true }
             ).select({ _id: 0, items: 1, totalPrice: 1, totalItems: 1 })
 
@@ -158,7 +158,7 @@ const updateCart = async function (req, res) {
         if (removeProduct == 1) {
             const update = await cartModel.findOneAndUpdate(
                 { userId: userId, "items.productId": productId },
-                { $inc: { totalPrice: -checkProductId.price, "items.quantity": -1 } },
+                { $inc: { totalPrice: -checkProductId.price, "items.$.quantity": -1 } },
                 { new: true }
             ).select({ _id: 0, items: 1, totalPrice: 1, totalItems: 1 })
 
